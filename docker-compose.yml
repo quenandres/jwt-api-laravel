@@ -1,0 +1,30 @@
+  version : '3'
+  services:
+    db:
+      container_name: jwt-mysql-lav9
+      image: mysql:5.7
+      ports:
+        - "${DB_PORT}:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=${DB_DATABASE}
+        - MYSQL_USER=${DB_USERNAME}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
+      restart: always
+    api:
+      image: bitnami/laravel:9
+      container_name: jwt-api-lav9
+      ports:
+        - "8011:8000"
+      environment:
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=3306
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_DATABASE=${DB_DATABASE}
+        - DB_PASSWORD=${DB_PASSWORD}
+      volumes:
+        - ./api/:/app
+      restart: always
+      depends_on:
+        - db
+    
