@@ -21,3 +21,7 @@ _Handler.php_
         ], $e->status);
     }
 ```
+`Creacion de request para hacer la validación`
+```bash
+php artisan make:request Auth/RegisterRequest
+```

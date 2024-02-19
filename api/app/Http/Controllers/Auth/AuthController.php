@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,5 +28,20 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'register success'
         ], 201);
+    }
+
+    public function login(LoginRequest $request) {
+
+        $credentials = $request->only('email', 'password');
+
+        if (! $token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'invalid_credentials'], 401);
+        }
+
+        return response()->json([
+            'user' => auth()->user(),
+            'token' => $token
+        ], 200);
+
     }
 }
